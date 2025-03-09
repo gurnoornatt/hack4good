@@ -1,0 +1,31 @@
+<svg width="800" height="1200" viewBox="0 0 800 1200" xmlns="http://www.w3.org/2000/svg">
+  <!-- California outline - simplified representation -->
+  <path 
+    d="M200,200 L180,400 L150,600 L200,800 L300,900 L400,950 L500,900 L550,800 L580,600 L550,400 L500,300 L400,250 L300,220 Z" 
+    fill="#e6e6e6" 
+    stroke="#999999" 
+    stroke-width="5"
+  />
+  
+  <!-- Pacific Ocean -->
+  <rect x="0" y="0" width="150" height="1200" fill="#cce5ff" opacity="0.5" />
+  
+  <!-- Some terrain features -->
+  <path 
+    d="M400,300 L450,350 L500,400 L550,500 L500,550 L450,500 L400,450 Z" 
+    fill="#d4d4aa" 
+    stroke="#a9a977" 
+    stroke-width="2"
+  />
+  
+  <!-- Some more terrain -->
+  <path 
+    d="M250,500 L300,550 L350,600 L300,650 L250,600 Z" 
+    fill="#d4d4aa" 
+    stroke="#a9a977" 
+    stroke-width="2"
+  />
+  
+  <!-- Text label -->
+  <text x="350" y="600" font-family="Arial" font-size="24" fill="#666666" text-anchor="middle">California</text>
+</svg> 
