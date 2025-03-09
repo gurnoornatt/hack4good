@@ -1,0 +1,2 @@
+county_id,name,state,coordinates_lat,coordinates_lon,recent_fires,avg_frp,temperature,humidity,wind_speed,precipitation,ndvi,vegetation_density,fire_risk,historical_fires,suitability_score
+sf,San Francisco,California,37.7749,-122.4194,7,3.673583551607364,21.71763830499524,65.43051694954238,17.784053133469357,5.689035369633468,0.6617997194013379,0.6406124662648314,0.6193016972250309,185,37.34310475543913

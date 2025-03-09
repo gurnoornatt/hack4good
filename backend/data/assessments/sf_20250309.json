@@ -1,0 +1,56 @@
+{
+  "county_id": "sf",
+  "county_name": "San Francisco",
+  "timestamp": "2025-03-09T15:43:05.507025",
+  "overall_recommendation": "Suitable for controlled burns with additional precautions and monitoring.",
+  "suitability_score": 53.426048684429524,
+  "key_factors": [
+    {
+      "name": "Weather Conditions",
+      "value": 0.3571571727189327,
+      "weight": 0.4
+    },
+    {
+      "name": "Vegetation Density",
+      "value": 0.5066356287211394,
+      "weight": 0.3
+    },
+    {
+      "name": "Historical Fire Activity",
+      "value": 0.34719977873069136,
+      "weight": 0.2
+    },
+    {
+      "name": "Proximity to Populated Areas",
+      "value": 0.6342480790057898,
+      "weight": 0.1
+    }
+  ],
+  "limitations": [
+    {
+      "factor": "Weather",
+      "description": "Current wind conditions may affect burn operations",
+      "severity": "medium"
+    },
+    {
+      "factor": "Vegetation",
+      "description": "Dense vegetation in some areas requires careful management",
+      "severity": "high"
+    },
+    {
+      "factor": "Resources",
+      "description": "Limited fire personnel availability for monitoring",
+      "severity": "low"
+    }
+  ],
+  "recommendations": [
+    "Conduct burns during early morning hours when humidity is higher",
+    "Establish firebreaks around the perimeter of the burn area",
+    "Notify local residents and businesses before conducting burns",
+    "Have water resources readily available for containment if needed",
+    "Monitor weather forecasts closely for changes in conditions"
+  ],
+  "weather_impact": "Current weather conditions are generally favorable for controlled burns, but wind speeds should be monitored closely.",
+  "vegetation_analysis": "Vegetation density varies across the county, with some areas requiring more careful management than others.",
+  "historical_context": "The San Francisco area has experienced 8 wildfires in the past year, indicating moderate fire activity."
+}

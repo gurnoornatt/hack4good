@@ -1,4 +1,4 @@
-import ee
+import ee  # Importing the Earth Engine library
 
 # Initialize Earth Engine
 ee.Initialize(project="heroic-gantry-450601-j7")

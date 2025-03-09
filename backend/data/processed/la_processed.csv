@@ -1,0 +1,2 @@
+county_id,name,state,coordinates_lat,coordinates_lon,recent_fires,avg_frp,temperature,humidity,wind_speed,precipitation,ndvi,vegetation_density,fire_risk,historical_fires,suitability_score
+la,Los Angeles,California,34.0522,-118.2437,19,2.5327284752550825,26.370165044548486,50.74226108859112,2.2446192667666076,3.2400519081624246,0.5844182570538,0.49099624048490775,0.6395819865357115,80,44.854776471245714

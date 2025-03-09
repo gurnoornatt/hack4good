@@ -1,151 +1,165 @@
-# Wildfire Analysis Tools
+# BurnAI Backend
 
-This repository contains a collection of Python scripts for analyzing wildfire risk factors, including weather data, vegetation indices, and burned areas in California.
+This is the backend for the BurnAI Wildfire Risk & Controlled Burn Assessment application. It collects data from various sources, processes it, and uses AI to generate burn assessments.
 
-## Scripts Overview
+## Architecture
 
-### 1. NOAA Weather Data Fetcher (`noaa.py`)
-Fetches and processes weather data from NOAA stations, including:
-- Maximum and minimum temperature
-- Precipitation
-- Wind speed and direction
-- Estimated relative humidity
-- Vapor Pressure Deficit (VPD)
+The backend is structured as follows:
 
-### 2. Vegetation Analysis (`vegetation.py`)
-Analyzes vegetation health using Sentinel-2 satellite imagery:
-- Calculates NDVI (Normalized Difference Vegetation Index)
-- Masks water bodies using NDWI
-- Processes and aggregates data by coordinates
-- Exports results as CSV and GeoTIFF
+```
+backend/
+├── data/                  # Storage for CSV data files
+├── models/                # ML models and AI integration
+├── services/              # Data processing services
+├── utils/                 # Utility functions
+├── api/                   # FastAPI endpoints
+├── notebooks/             # Jupyter notebooks for analysis
+├── docs/                  # Documentation
+├── nasa_firms.py          # NASA FIRMS fire data collection
+├── noaa.py                # NOAA weather data collection
+├── vegetation.py          # Earth Engine vegetation data (NDVI)
+├── veg2.py                # Google Drive integration for vegetation data
+├── collect_data.py        # Data collection script
+├── process_data.py        # Data processing script
+├── ai_analysis.py         # AI analysis script
+├── run_pipeline.py        # Pipeline runner
+└── requirements.txt       # Python dependencies
+```
 
-### 3. Enhanced Vegetation Analysis (`veg2.py`)
-Extended version of vegetation analysis with additional features:
-- Multi-temporal vegetation analysis
-- Advanced water body masking
-- Improved data aggregation
-- Enhanced error handling
+## Prerequisites
+
+- Python 3.9+
+- Google Earth Engine account
+- NOAA API key
+- OpenAI API key
+- Google Drive API credentials
 
 ## Installation
 
-1. Clone the repository:
-```bash
-git clone https://github.com/peteteaa/SizzlerRizzler.git
-cd SizzlerRizzler
-```
+1. Create a virtual environment:
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   ```
 
-2. Create and activate a virtual environment:
-```bash
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-```
+2. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-3. Install required packages:
-```bash
-pip install -r requirements.txt
-```
+3. Set up environment variables:
+   - Create a `.env` file with the following variables:
+     ```
+     NOAA_API_KEY=your_noaa_api_key
+     OPENAI_API_KEY=your_openai_api_key
+     ```
 
-## Dependencies
-
-Create a `requirements.txt` file with the following dependencies:
-```
-earthengine-api>=0.1.355
-pandas>=2.0.0
-numpy>=1.24.0
-requests>=2.31.0
-tqdm>=4.65.0
-google-cloud-storage>=2.10.0
-```
-
-## Authentication Setup
-
-### NOAA API
-1. Get a NOAA API token from: https://www.ncdc.noaa.gov/cdo-web/token
-2. Set your token as an environment variable:
-```bash
-export NOAA_TOKEN='your-token-here'
-```
-
-### Google Earth Engine
-1. Sign up for Google Earth Engine: https://earthengine.google.com/signup/
-2. Install the Earth Engine CLI:
-```bash
-pip install earthengine-api --upgrade
-```
-3. Authenticate:
-```bash
-earthengine authenticate
-```
+4. Authenticate with Google Earth Engine:
+   - Ensure `credentials.json` is present for Google Drive API
+   - Run `earthengine authenticate` if using Earth Engine CLI
 
 ## Usage
 
-### NOAA Weather Data
-```python
-from noaa import NOAADataFetcher
+### Running the Full Pipeline
 
-# Initialize fetcher with your NOAA API token
-fetcher = NOAADataFetcher(token='your-token-here')
+To run the entire pipeline (data collection, processing, AI analysis, and API server):
 
-# Fetch and process data
-fetcher.fetch_and_process()
+```bash
+python run_pipeline.py
 ```
 
-### Vegetation Analysis
-```python
-from vegetation import process_ndvi_data
+### Running Individual Components
 
-# Process vegetation data
-process_ndvi_data('2023-01-01', '2023-12-31')
+#### 1. Data Collection
+
+```bash
+python collect_data.py
 ```
 
-### Enhanced Vegetation Analysis
-```python
-from veg2 import VegetationAnalyzer
+This will:
+- Fetch fire data from NASA FIRMS
+- Fetch weather data from NOAA
+- Calculate vegetation indices using Google Earth Engine
 
-# Initialize analyzer
-analyzer = VegetationAnalyzer()
+#### 2. Data Processing
 
-# Run analysis
-analyzer.process_vegetation_data('2023-01-01', '2023-12-31')
+```bash
+python process_data.py
 ```
 
-## Output Data
+This will:
+- Process the collected data
+- Calculate suitability scores
+- Save processed data to CSV files
 
-All scripts save their output in organized directories:
-- Weather data: `data/weather/`
-- Vegetation data: `data/vegetation/`
-- Processed results include both CSV files and metadata JSON files
+#### 3. AI Analysis
 
-## Data Structure
-
-### NOAA Weather Data
-```csv
-date,latitude,longitude,TMAX,TMIN,PRCP,AWND,WDF2,RH,VPD
-2023-01-01,37.7749,-122.4194,15.6,8.3,0.0,3.1,270,65.2,0.82
+```bash
+python ai_analysis.py
 ```
 
-### Vegetation Data
-```csv
-latitude,longitude,ndvi,pixel_count
-37.7749,-122.4194,0.65,3
+This will:
+- Generate burn assessments using OpenAI
+- Save assessments to JSON files
+
+#### 4. API Server
+
+```bash
+cd api
+python main.py
 ```
 
-## Error Handling
+This will:
+- Start the FastAPI server
+- Expose the processed data and AI assessments through API endpoints
 
-All scripts include robust error handling and logging:
-- Failed API requests are retried automatically
-- Data validation checks are performed
-- Detailed error messages are logged
-- Missing data is handled gracefully
+## API Endpoints
 
-## Contributing
+The API provides the following endpoints:
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+- `GET /api/counties` - Get list of all counties with basic data
+- `GET /api/counties/{county_id}` - Get detailed data for a specific county
+- `GET /api/weather/{county_id}` - Get current weather conditions for a county
+- `GET /api/burn-assessment/{county_id}` - Get burn assessment for a county
+- `GET /api/burn-assessment/export/{county_id}` - Generate and download assessment report
+- `POST /api/burn-protocol/initiate` - Initiate burn protocol workflow
+- `GET /api/fire-points/{county_id}` - Get recent fire points for a county
+- `GET /api/historical-hotspots/{county_id}` - Get historical hotspots for a county
+- `GET /api/map/counties` - Get GeoJSON data for county boundaries
 
-## License
+## Data Sources
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+1. **NASA FIRMS**: Fire Information for Resource Management System
+   - Provides active fire data
+   - API Key: Not required for CSV downloads
+
+2. **NOAA**: National Oceanic and Atmospheric Administration
+   - Provides weather data
+   - API Key: Required, get from https://www.ncdc.noaa.gov/cdo-web/token
+
+3. **Google Earth Engine**: For vegetation indices
+   - Provides NDVI (Normalized Difference Vegetation Index)
+   - Authentication: Required, use `earthengine authenticate`
+
+## Troubleshooting
+
+### Common Issues
+
+1. **API Rate Limits**:
+   - NOAA and NASA APIs have rate limits
+   - The code includes retry logic with exponential backoff
+
+2. **Google Earth Engine**:
+   - If authentication fails, run `earthengine authenticate`
+   - Check for quota limits
+
+3. **Data Processing**:
+   - If data files are missing, check the data collection logs
+   - Ensure all required directories exist
+
+## Documentation
+
+For more detailed information, see:
+
+- [Technical Guide](docs/technical_guide.md) - Comprehensive guide for the backend
+- [UI/UX Component Integration Guide](../docs/ui-integration-guide.md) - Guide for frontend integration
